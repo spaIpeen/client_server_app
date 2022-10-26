@@ -1,5 +1,5 @@
 import json
-from chatapp.common.variables import MAX_PACKAGE_LENGTH, ENCODING
+from common.variables import MAX_PACKAGE_LENGTH, ENCODING
 
 
 def send_message(sock, message):
