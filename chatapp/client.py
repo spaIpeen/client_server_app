@@ -15,7 +15,23 @@ def generate_presence(username='Guest'):
     }
 
 
-def main(address=DEFAULT_IP_ADDRESS, port=DEFAULT_PORT):
+def main():
+    try:
+        address = sys.argv[1]
+    except IndexError:
+        print('Необходимо указать ip сервера')
+
+    try:
+        port = int(sys.argv[2]) if len(sys.argv) > 2 else DEFAULT_PORT
+        if port < 1024 or port > 65535:
+            raise ValueError
+    except IndexError:
+        print("<script's name> <address> <port>")
+        sys.exit(1)
+    except ValueError:
+        print('1024 < port < 65535')
+        sys.exit(1)
+
     client_socket = socket(AF_INET, SOCK_STREAM)
     client_socket.connect((address, port))
     send_message(client_socket, generate_presence())
@@ -24,10 +40,4 @@ def main(address=DEFAULT_IP_ADDRESS, port=DEFAULT_PORT):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 2:
-        client_port = sys.argv[2] if sys.argv[2].isdigit() else DEFAULT_PORT
-        main(sys.argv[1], int(client_port))
-    elif len(sys.argv) == 1:
-        main()
-    else:
-        main(sys.argv[1])
+    main()
