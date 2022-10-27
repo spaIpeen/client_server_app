@@ -1,5 +1,7 @@
+import sys
 import unittest
 
+sys.path.append('..')
 from common.variables import RESPONSE, ALERT, ACTION, PRESENCE, TIME, USER, ACCOUNT_NAME
 from server import generate_response
 

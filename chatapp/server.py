@@ -1,8 +1,8 @@
 import json
 import sys
 from socket import socket, AF_INET, SOCK_STREAM
-from chatapp.common.utils import send_message, get_message
-from chatapp.common.variables import RESPONSE, ACTION, PRESENCE, TIME, USER, ACCOUNT_NAME, ALERT, DEFAULT_PORT
+from common.utils import send_message, get_message
+from common.variables import RESPONSE, ACTION, PRESENCE, TIME, USER, ACCOUNT_NAME, ALERT, DEFAULT_PORT
 
 
 def generate_response(message):

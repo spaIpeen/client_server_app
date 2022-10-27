@@ -1,8 +1,8 @@
 import time
 import sys
 from socket import socket, AF_INET, SOCK_STREAM
-from chatapp.common.utils import send_message, get_message
-from chatapp.common.variables import ACTION, USER, TIME, ACCOUNT_NAME, PRESENCE, DEFAULT_IP_ADDRESS, DEFAULT_PORT
+from common.utils import send_message, get_message
+from common.variables import ACTION, USER, TIME, ACCOUNT_NAME, PRESENCE, DEFAULT_PORT
 
 
 def generate_presence(username='Guest'):

@@ -1,4 +1,7 @@
+import sys
 import unittest
+
+sys.path.append('..')
 from client import generate_presence
 from common.variables import ACTION, PRESENCE, TIME, USER, ACCOUNT_NAME
 
