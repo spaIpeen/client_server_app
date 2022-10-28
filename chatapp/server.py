@@ -1,12 +1,12 @@
 import json
 import sys
 from socket import socket, AF_INET, SOCK_STREAM
-from chatapp.common.utils import send_message, get_message
-from chatapp.common.variables import RESPONSE, ACTION, PRESENCE, TIME, USER, ACCOUNT_NAME, ALERT, DEFAULT_PORT
+from common.utils import send_message, get_message
+from common.variables import RESPONSE, ACTION, PRESENCE, TIME, USER, ACCOUNT_NAME, ALERT, DEFAULT_PORT
 
 
 def generate_response(message):
-    if (message[ACTION] == PRESENCE and message.get(TIME) is not None
+    if (message.get(ACTION) is not None and message[ACTION] == PRESENCE and message.get(TIME) is not None
             and message.get(USER) is not None and message[USER][ACCOUNT_NAME] == 'Guest'):
         return {
             RESPONSE: 200,
@@ -15,7 +15,7 @@ def generate_response(message):
     else:
         return {
             RESPONSE: 400,
-            ALERT: "bad request"
+            ALERT: "BAD REQUEST"
         }
 
 
