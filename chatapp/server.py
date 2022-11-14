@@ -1,4 +1,5 @@
 import sys
+import select
 from socket import socket, AF_INET, SOCK_STREAM
 from common.utils import send_message, get_message
 from common.variables import RESPONSE, ACTION, PRESENCE, TIME, USER, ACCOUNT_NAME, ALERT, DEFAULT_PORT, MAX_CONNECTION
@@ -6,23 +7,6 @@ import logging
 import logs.server_log_config
 
 logger = logging.getLogger('chatapp.server')
-
-
-def generate_response(message):
-    logger.debug('Generating response')
-    logger.info('200/OK')
-    if (message.get(ACTION) is not None and message[ACTION] == PRESENCE and message.get(TIME) is not None
-            and message.get(USER) is not None and message[USER][ACCOUNT_NAME] == 'Guest'):
-        return {
-            RESPONSE: 200,
-            ALERT: "OK"
-        }
-    else:
-        logger.info('400/BAD REQUEST')
-        return {
-            RESPONSE: 400,
-            ALERT: "BAD REQUEST"
-        }
 
 
 def main():
@@ -46,17 +30,26 @@ def main():
     server_socket = socket(AF_INET, SOCK_STREAM)
     server_socket.bind((address, port))
     server_socket.listen(MAX_CONNECTION)
+    server_socket.settimeout(1)
+    client_sockets = []
     logger.debug('The socket is ready to receive messages')
+
     while True:
-        client, address = server_socket.accept()
         try:
-            send_message(client, generate_response(get_message(client)))
-            logger.info('The message is received')
-            logger.info('The response is sent.')
-            client.close()
-        except ValueError:
-            logger.error('Message type error.')
-            client.close()
+            client, address = server_socket.accept()
+        except OSError as e:
+            print(e.errno)
+        else:
+            client_sockets.append(client)
+        finally:
+            write, read, err = select.select(client_sockets, client_sockets, [], 0)
+            data = ''
+            if write:
+                for message in write:
+                    data = get_message(message)
+            if read:
+                for message in read:
+                    send_message(message, data)
 
 
 if __name__ == '__main__':

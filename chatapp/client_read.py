@@ -8,12 +8,6 @@ import logs.client_log_config
 logger = logging.getLogger('chatapp.client')
 
 
-def generate_presence():
-    message = input('What you say?')
-    logger.debug('Generating presence')
-    return message
-
-
 def main():
     try:
         address = sys.argv[1]
@@ -37,8 +31,6 @@ def main():
         client_socket.connect((address, port))
         logger.info('Successful connection to the server.')
         while True:
-            send_message(client_socket, generate_presence())
-            logger.info('The message is sent')
             get_message(client_socket)
             logger.info('The message is received')
     except ConnectionRefusedError:
