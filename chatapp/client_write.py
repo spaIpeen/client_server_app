@@ -39,8 +39,6 @@ def main():
         while True:
             send_message(client_socket, generate_presence())
             logger.info('The message is sent')
-            get_message(client_socket)
-            logger.info('The message is received')
     except ConnectionRefusedError:
         logger.error('Invalid ip or port specified to connect to the server.')
         sys.exit(1)
