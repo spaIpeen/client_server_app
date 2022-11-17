@@ -25,9 +25,9 @@ def log(func):
 
 @log
 def send_message(sock, message):
-    if not isinstance(message, str):
+    if not isinstance(message, dict):
         raise TypeError
-    sock.send(message.encode(ENCODING))
+    sock.send(json.dumps(message).encode(ENCODING))
 
 
 @log
@@ -36,7 +36,10 @@ def get_message(sock):
     if isinstance(bytes_message, bytes):
         str_message = bytes_message.decode(ENCODING)
         if isinstance(str_message, str):
-            print(str_message)
-            return str_message
+            dict_message = json.loads(str_message)
+            if isinstance(dict_message, dict):
+                print(dict_message)
+                return dict_message
+            raise ValueError
         raise ValueError
     raise ValueError
